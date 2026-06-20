@@ -134,89 +134,112 @@ function startLiveClock() {
 
 // ── 탭 메뉴 제어 로직 ──────────────────────────────────────────────────────────────
 function setupTabs() {
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetTab = btn.getAttribute('data-tab');
-      
-      // 검색창 클리어 및 스케줄 화면 복귀
-      if (searchInput) {
-        searchInput.value = '';
-        clearSearchBtn.style.display = 'none';
-        showScheduleView();
-      }
+  if (tabButtons) {
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
+        
+        // 검색창 클리어 및 스케줄 화면 복귀
+        if (searchInput) {
+          searchInput.value = '';
+          if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+          showScheduleView();
+        }
 
-      // 버튼 활성화 클래스 스위칭
-      tabButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+        // 버튼 활성화 클래스 스위칭
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-      // 탭 패널 표시 제어
-      tabPanes.forEach(pane => {
-        const paneId = pane.getAttribute('id');
-        if (paneId === `pane-${targetTab}`) {
-          pane.classList.add('active');
-        } else {
-          pane.classList.remove('active');
+        // 탭 패널 표시 제어
+        if (tabPanes) {
+          tabPanes.forEach(pane => {
+            const paneId = pane.getAttribute('id');
+            if (paneId === `pane-${targetTab}`) {
+              pane.classList.add('active');
+            } else {
+              pane.classList.remove('active');
+            }
+          });
+        }
+
+        // 모바일일 경우 탭 클릭 후 사이드바 닫기
+        if (sidebar) sidebar.classList.remove('open');
+        if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+
+        // 탭별 추가 렌더링
+        if (targetTab === 'members') {
+          renderMembersGridAll();
+        } else if (targetTab === 'daily-work') {
+          loadDailyWorks();
         }
       });
-
-      // 모바일일 경우 탭 클릭 후 사이드바 닫기
-      sidebar.classList.remove('open');
-      sidebarOverlay.classList.remove('active');
-
-      // 탭별 추가 렌더링
-      if (targetTab === 'members') {
-        renderMembersGridAll();
-      } else if (targetTab === 'daily-work') {
-        loadDailyWorks();
-      }
     });
-  });
+  }
 }
 
 // ── 이벤트 리스너 설정 ────────────────────────────────────────────────────────────
 function setupEventListeners() {
-  menuToggleBtn.addEventListener('click', () => {
-    sidebar.classList.add('open');
-    sidebarOverlay.classList.add('active');
-  });
+  if (menuToggleBtn) {
+    menuToggleBtn.addEventListener('click', () => {
+      if (sidebar) sidebar.classList.add('open');
+      if (sidebarOverlay) sidebarOverlay.classList.add('active');
+    });
+  }
 
   const closeSidebar = () => {
-    sidebar.classList.remove('open');
-    sidebarOverlay.classList.remove('active');
+    if (sidebar) sidebar.classList.remove('open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('active');
   };
-  sidebarCloseBtn.addEventListener('click', closeSidebar);
-  sidebarOverlay.addEventListener('click', closeSidebar);
+  
+  if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 
-  prevWeekBtn.addEventListener('click', () => {
-    currentWeekStart.setDate(currentWeekStart.getDate() - 7);
-    renderWeeklySchedule();
-  });
-  nextWeekBtn.addEventListener('click', () => {
-    currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-    renderWeeklySchedule();
-  });
-  todayBtn.addEventListener('click', () => {
-    setWeekStartToDate(new Date());
-    renderWeeklySchedule();
-  });
+  if (prevWeekBtn) {
+    prevWeekBtn.addEventListener('click', () => {
+      if (currentWeekStart) {
+        currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+        renderWeeklySchedule();
+      }
+    });
+  }
+  if (nextWeekBtn) {
+    nextWeekBtn.addEventListener('click', () => {
+      if (currentWeekStart) {
+        currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+        renderWeeklySchedule();
+      }
+    });
+  }
+  if (todayBtn) {
+    todayBtn.addEventListener('click', () => {
+      setWeekStartToDate(new Date());
+      renderWeeklySchedule();
+    });
+  }
 
-  searchInput.addEventListener('input', e => {
-    const q = e.target.value.trim().toLowerCase();
-    clearSearchBtn.style.display = q ? 'block' : 'none';
-    q ? performSearch(q) : showScheduleView();
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      if (clearSearchBtn) clearSearchBtn.style.display = q ? 'block' : 'none';
+      q ? performSearch(q) : showScheduleView();
+    });
+  }
 
-  clearSearchBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    clearSearchBtn.style.display = 'none';
-    showScheduleView();
-  });
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      clearSearchBtn.style.display = 'none';
+      showScheduleView();
+    });
+  }
 
-  backToWeekBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    clearSearchBtn.style.display = 'none';
-    showScheduleView();
-  });
+  if (backToWeekBtn) {
+    backToWeekBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+      showScheduleView();
+    });
+  }
 
   // Admin 모드 토글
   if (adminModeToggle) {

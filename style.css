@@ -67,6 +67,11 @@ button, input {
   outline: none;
 }
 
+/* --- 유틸리티 클래스 --- */
+.hidden {
+  display: none !important;
+}
+
 /* --- 레이아웃 전체 구조 --- */
 .app-container {
   display: flex;
