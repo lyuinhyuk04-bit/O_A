@@ -11,6 +11,7 @@ let isAdminMode     = false;       // 관리자 모드 활성화 여부
 let isDirty         = false;       // 수정사항 저장 여부
 let isLoaded        = false;       // 데이터 로드 완료 여부
 let liveMembersData = [];          // 실시간 방송 상태 캐시
+let filterLiveByActiveMember = false; // 선택된 멤버의 방송만 필터링해서 볼지 여부
 
 // ── DOM 참조 (DOM Refs) ──────────────────────────────────────────────────────────
 const sidebar              = document.getElementById('sidebar');
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isLoaded = true;
 
       renderCrewLinks();
-      selectMember(activeMember);
+      selectMember(activeMember, false);
       fetchLiveStatus();
     })
     .catch(err => {
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeMember = appConfig.defaultMember;
 
         renderCrewLinks();
-        selectMember(activeMember);
+        selectMember(activeMember, false);
         fetchLiveStatus();
       } else {
         const errorHtml = `
@@ -167,7 +168,10 @@ function setupTabs() {
         if (sidebarOverlay) sidebarOverlay.classList.remove('active');
 
         // 탭별 추가 렌더링
-        if (targetTab === 'members') {
+        if (targetTab === 'dashboard') {
+          filterLiveByActiveMember = false;
+          renderLiveStatus(liveMembersData);
+        } else if (targetTab === 'members') {
           renderMembersGridAll();
         } else if (targetTab === 'daily-work') {
           loadDailyWorks();
@@ -368,10 +372,14 @@ function renderMembersList() {
       </div>`).join('');
 }
 
-function selectMember(key) {
+function selectMember(key, isInteractive = true) {
   activeMember = key;
+  if (isInteractive) {
+    filterLiveByActiveMember = true;
+  }
   renderMembersList();
   renderActiveMemberProfile();
+  renderLiveStatus(liveMembersData);
   
   const memberScheds = rawSchedules.filter(s => s.member === key);
   if (memberScheds.length > 0) {
@@ -878,8 +886,13 @@ function resetLiveRefreshButton() {
 function renderLiveStatus(results) {
   if (!liveGridContainer || !results) return;
 
+  let filteredResults = results;
+  if (filterLiveByActiveMember && activeMember) {
+    filteredResults = results.filter(r => r.member === activeMember);
+  }
+
   // 방송 중인 멤버 상단 정렬
-  const sortedResults = [...results].sort((a, b) => {
+  const sortedResults = [...filteredResults].sort((a, b) => {
     if (a.is_live && !b.is_live) return -1;
     if (!a.is_live && b.is_live) return 1;
     return 0;
