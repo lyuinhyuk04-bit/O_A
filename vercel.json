@@ -20,6 +20,14 @@
       "dest": "/api/schedules.js"
     },
     {
+      "src": "/api/daily_works",
+      "dest": "/api/daily_works.js"
+    },
+    {
+      "src": "/api/save_daily_work",
+      "dest": "/api/save_daily_work.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
