@@ -1,5 +1,5 @@
 /* ==========================================================================
-   app.js  —  오아팀 지통실 대시보드 스크립트 (기존 뚱딴지 코드 확장 개조)
+   app.js  —  오아팀 지통실 대시보드 스크립트 (기존 오아팀 코드 확장 개조)
    ========================================================================== */
 
 // ── 상태 관리 (State) ─────────────────────────────────────────────────────────────
@@ -54,6 +54,14 @@ const searchResultsSection = document.getElementById('searchResultsSection');
 const searchResultsList    = document.getElementById('searchResultsList');
 const searchCount          = document.getElementById('searchCount');
 const backToWeekBtn        = document.getElementById('backToWeekBtn');
+
+// 메모장 편집 모달 DOM
+const openNotepadBtn       = document.getElementById('openNotepadBtn');
+const notepadModal         = document.getElementById('notepadModal');
+const notepadModalCloseBtn = document.getElementById('notepadModalCloseBtn');
+const notepadCancelBtn     = document.getElementById('notepadCancelBtn');
+const notepadSaveBtn       = document.getElementById('notepadSaveBtn');
+const notepadTextArea       = document.getElementById('notepadTextArea');
 
 // 우측 패널 DOM
 const todayScheduleContainer = document.getElementById('todayScheduleContainer');
@@ -268,6 +276,17 @@ function setupEventListeners() {
   if (deleteBtn) deleteBtn.addEventListener('click', handleDeleteClick);
   if (floatingSaveBtn) floatingSaveBtn.addEventListener('click', saveToServer);
   if (liveRefreshBtn) liveRefreshBtn.addEventListener('click', fetchLiveStatus);
+
+  // 메모장 편집 이벤트 바인딩
+  if (openNotepadBtn) openNotepadBtn.addEventListener('click', openNotepadModal);
+  if (notepadModalCloseBtn) notepadModalCloseBtn.addEventListener('click', closeNotepadModal);
+  if (notepadCancelBtn) notepadCancelBtn.addEventListener('click', closeNotepadModal);
+  if (notepadSaveBtn) notepadSaveBtn.addEventListener('click', saveNotepadSchedule);
+  if (notepadModal) {
+    notepadModal.addEventListener('click', e => {
+      if (e.target === notepadModal) closeNotepadModal();
+    });
+  }
 }
 
 // ── 시간 포맷 파서 및 헬퍼 ─────────────────────────────────────────────────────────
@@ -301,7 +320,7 @@ function formatDisplayTime(timeStr, memberKey) {
     let h = parseInt(siMatch[1], 10);
     const m = siMatch[2] ? parseInt(siMatch[2], 10) : 0;
     let ampm = '오후';
-    const isMorningMember = memberKey && ['yuki', 'maribyeol', 'neboring'].includes(memberKey);
+    const isMorningMember = memberKey && ['yuki', 'neboring'].includes(memberKey);
     
     if (h < 12) {
       ampm = isMorningMember ? '오전' : '오후';
@@ -655,6 +674,227 @@ function showScheduleView() {
 // ── 관리자 수동 일정 모달 제어 ──────────────────────────────────────────────────────────
 function closeModal() {
   if (scheduleModal) scheduleModal.classList.remove('active');
+}
+
+// ── 메모장 일정 모달 제어 및 로직 ──────────────────────────────────────────────────────
+function openNotepadModal() {
+  if (!notepadModal) return;
+  loadScheduleToNotepad();
+  notepadModal.classList.add('active');
+}
+
+function closeNotepadModal() {
+  if (notepadModal) notepadModal.classList.remove('active');
+}
+
+function loadScheduleToNotepad() {
+  const DAY_NAMES = ['월', '화', '수', '목', '금', '토', '일'];
+  const memberScheds = getMemberSchedules();
+  let text = '';
+
+  for (let idx = 0; idx < 7; idx++) {
+    const dateObj = new Date(currentWeekStart);
+    dateObj.setDate(currentWeekStart.getDate() + idx);
+    const dateStr = formatDateISO(dateObj);
+    const dayName = DAY_NAMES[idx];
+
+    const dayScheds = memberScheds
+      .filter(s => s.date === dateStr)
+      .sort((a, b) => {
+        if (a.time === '미정' && b.time !== '미정') return 1;
+        if (a.time !== '미정' && b.time === '미정') return -1;
+        return a.time.localeCompare(b.time);
+      });
+
+    if (dayScheds.length === 0) {
+      text += `${dayName}: 휴방 또는 일정 입력\n`;
+    } else {
+      dayScheds.forEach(s => {
+        let line = `${dayName}: `;
+        if (s.time && s.time !== '미정') {
+          line += `${s.time} `;
+        } else if (s.time === '미정') {
+          line += `미정 `;
+        }
+        line += `${s.title}`;
+        if (s.note && s.note !== '수동 수정') {
+          line += ` (비고: ${s.note})`;
+        }
+        text += line + '\n';
+      });
+    }
+  }
+  notepadTextArea.value = text.trim();
+}
+
+function saveNotepadSchedule() {
+  if (!notepadTextArea) return;
+  const lines = notepadTextArea.value.split('\n');
+
+  // 1. Get dates of the current week
+  const weekDates = [];
+  const DAY_NAMES = ['월', '화', '수', '목', '금', '토', '일'];
+  for (let idx = 0; idx < 7; idx++) {
+    const dateObj = new Date(currentWeekStart);
+    dateObj.setDate(currentWeekStart.getDate() + idx);
+    weekDates.push({
+      dateStr: formatDateISO(dateObj),
+      dayName: DAY_NAMES[idx]
+    });
+  }
+
+  const weekStartStr = weekDates[0].dateStr;
+  const weekEndStr = weekDates[6].dateStr;
+
+  // 2. Filter out existing schedules for activeMember in this week
+  rawSchedules = rawSchedules.filter(s => {
+    if (s.member === activeMember && s.date >= weekStartStr && s.date <= weekEndStr) {
+      return false;
+    }
+    return true;
+  });
+
+  const newSchedules = [];
+
+  // Helper to parse time
+  function parseTimeStr(str) {
+    str = str.trim();
+    if (str === '미정' || !str) return '미정';
+    
+    // HH:MM
+    const hhmm = str.match(/^(\d{1,2}):(\d{2})/);
+    if (hhmm) {
+      const h = parseInt(hhmm[1], 10);
+      const m = parseInt(hhmm[2], 10);
+      if (h >= 0 && h < 24 && m >= 0 && m < 60) {
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+      }
+    }
+
+    // Korean time
+    const korTime = str.match(/^(오전|오후|새벽|밤|낮)?\s*(\d{1,2})\s*시(?:\s*(\d{1,2})\s*분)?/);
+    if (korTime) {
+      const ampm = korTime[1];
+      let h = parseInt(korTime[2], 10);
+      const m = korTime[3] ? parseInt(korTime[3], 10) : 0;
+      
+      if (ampm === '오후' && h < 12) {
+        h += 12;
+      } else if (ampm === '오전' && h === 12) {
+        h = 0;
+      } else if (ampm === '새벽' && h < 6) {
+        if (h === 12) h = 0;
+      } else if (ampm === '밤' && h < 12) {
+        h += 12;
+      }
+      
+      if (h >= 0 && h < 24 && m >= 0 && m < 60) {
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+      }
+    }
+
+    // Number only
+    const numOnly = str.match(/^(\d{1,2})$/);
+    if (numOnly) {
+      const h = parseInt(numOnly[1], 10);
+      if (h >= 0 && h < 24) {
+        return `${String(h).padStart(2, '0')}:00`;
+      }
+    }
+
+    return '미정';
+  }
+
+  // 3. Parse each line
+  lines.forEach(line => {
+    let cleanLine = line.trim().replace(/^[\-\*\s•\d\.\,\)]+/, '').trim();
+    if (!cleanLine) return;
+
+    const match = cleanLine.match(/^([월화수목금토일])\s*[:\-]?\s*(.*)$/);
+    if (!match) return;
+
+    const dayName = match[1];
+    let content = match[2].trim();
+
+    if (!content || content.includes('일정 입력') || content.includes('일정입력')) {
+      return;
+    }
+
+    const dateInfo = weekDates.find(d => d.dayName === dayName);
+    if (!dateInfo) return;
+
+    // Extract note
+    let note = '';
+    const noteRegex = /[\[\(]비고\s*[:\s]*([^\]\)]+)[\]\)]/i;
+    const noteMatch = content.match(noteRegex);
+    if (noteMatch) {
+      note = noteMatch[1].trim();
+      content = content.replace(noteRegex, '').trim();
+    }
+
+    // Extract time
+    let time = '미정';
+    let title = content;
+
+    const hhmmMatch = content.match(/^(\d{1,2}):(\d{2})/);
+    if (hhmmMatch) {
+      time = parseTimeStr(hhmmMatch[0]);
+      title = content.substring(hhmmMatch[0].length).trim();
+    } else {
+      const korMatch = content.match(/^(오전|오후|새벽|밤|낮)?\s*(\d{1,2})\s*시(?:\s*(\d{1,2})\s*분)?/);
+      if (korMatch) {
+        time = parseTimeStr(korMatch[0]);
+        title = content.substring(korMatch[0].length).trim();
+      } else if (content.startsWith('미정')) {
+        time = '미정';
+        title = content.substring(2).trim();
+      } else {
+        const numMatch = content.match(/^(\d{1,2})\s+/);
+        if (numMatch) {
+          const val = parseInt(numMatch[1], 10);
+          if (val >= 0 && val <= 24) {
+            time = `${String(val).padStart(2, '0')}:00`;
+            title = content.substring(numMatch[0].length).trim();
+          }
+        }
+      }
+    }
+
+    if (title === '휴방' || title === '휴뱅') {
+      title = '휴방';
+      time = '미정';
+    }
+
+    if (!title) {
+      title = '개인 방송';
+    }
+
+    newSchedules.push({
+      member: activeMember,
+      date: dateInfo.dateStr,
+      day: dayName,
+      time: time,
+      title: title,
+      note: note || '수동 수정',
+      source: 'manual'
+    });
+  });
+
+  // 4. Add parsed items to rawSchedules
+  rawSchedules.push(...newSchedules);
+
+  // 5. Sort rawSchedules
+  rawSchedules.sort((a, b) => {
+    if (a.date !== b.date) return a.date.localeCompare(b.date);
+    if (a.member !== b.member) return a.member.localeCompare(b.member);
+    return a.time.localeCompare(b.time);
+  });
+
+  // 6. Refresh UI & State
+  markDirty();
+  closeNotepadModal();
+  renderWeeklySchedule();
+  updateRightPanel();
 }
 
 window.openAddModal = function(dateStr) {

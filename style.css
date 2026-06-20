@@ -1916,4 +1916,32 @@ input:checked + .slider:before {
   color: #fff;
 }
 
+/* --- 메모장 편집 기능 스타일 추가 --- */
+.notepad-btn {
+  display: none;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--glass-border);
+  color: var(--accent-gold);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+  margin-left: 8px;
+}
+.notepad-btn:hover {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: var(--accent-gold);
+}
+body.admin-mode-active #openNotepadBtn {
+  display: inline-flex !important;
+}
+
+#notepadTextArea::placeholder {
+  color: var(--color-text-muted);
+}
+
 

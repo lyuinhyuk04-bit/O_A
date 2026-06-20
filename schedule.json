@@ -138,7 +138,7 @@
     "date": "2026-04-28",
     "day": "화",
     "time": "미정",
-    "title": "뚱딴지 피치 잘부탁드립니다!!",
+    "title": "오아팀 피치 잘부탁드립니다!!",
     "note": "",
     "source": "soop",
     "url": "https://www.sooplive.com/station/nslah830/post/194116063"
@@ -150,7 +150,7 @@
     "date": "2026-05-04",
     "day": "월",
     "time": "미정",
-    "title": "뚱딴지 컨텐츠 / 노래 방송",
+    "title": "오아팀 컨텐츠 / 노래 방송",
     "note": "",
     "source": "soop",
     "url": "https://www.sooplive.com/station/amaiyk0105/post/194738073"
@@ -270,7 +270,7 @@
     "date": "2026-06-03",
     "day": "수",
     "time": "14:00",
-    "title": "뚱딴지 컨텐츠 / 마추기 컨텐츠",
+    "title": "오아팀 컨텐츠 / 마추기 컨텐츠",
     "note": "",
     "source": "soop",
     "url": "https://www.sooplive.com/station/donggeul2/post/197661081"
@@ -306,7 +306,7 @@
     "date": "2026-06-04",
     "day": "목",
     "time": "미정",
-    "title": "시네티 국가부도의 날 / 뚱딴지 도전의 날",
+    "title": "시네티 국가부도의 날 / 오아팀 도전의 날",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet",
     "url": ""
@@ -426,7 +426,7 @@
     "date": "2026-06-09",
     "day": "화",
     "time": "17:00",
-    "title": "뚱딴지 점호 / 철권",
+    "title": "오아팀 점호 / 철권",
     "note": "",
     "source": "soop",
     "url": "https://www.sooplive.com/station/donggeul2/post/198242803"
@@ -450,7 +450,7 @@
     "date": "2026-06-09",
     "day": "화",
     "time": "14:00",
-    "title": "하다가뚱딴지 컨텐츠",
+    "title": "하다가오아팀 컨텐츠",
     "note": "",
     "source": "soop",
     "url": "https://www.sooplive.com/station/nslah830/post/198240679"
@@ -510,7 +510,7 @@
     "date": "2026-06-11",
     "day": "목",
     "time": "12:00",
-    "title": "뚱딴지 컨텐츠",
+    "title": "오아팀 컨텐츠",
     "note": "",
     "source": "soop",
     "url": "https://www.sooplive.com/station/donggeul2/post/198385819"
@@ -696,6 +696,15 @@
     "url": ""
   },
   {
+    "member": "oa",
+    "date": "2026-06-15",
+    "day": "월",
+    "time": "18:00",
+    "title": "개인 방송",
+    "note": "배그 시청자 참여",
+    "source": "manual"
+  },
+  {
     "id": 66224,
     "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "peach",
@@ -742,6 +751,15 @@
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet",
     "url": ""
+  },
+  {
+    "member": "oa",
+    "date": "2026-06-16",
+    "day": "화",
+    "time": "미정",
+    "title": "휴방",
+    "note": "수동 수정",
+    "source": "manual"
   },
   {
     "id": 66233,
@@ -792,6 +810,15 @@
     "url": ""
   },
   {
+    "member": "oa",
+    "date": "2026-06-17",
+    "day": "수",
+    "time": "20:00",
+    "title": "합방",
+    "note": "멤버 전원 참석",
+    "source": "manual"
+  },
+  {
     "id": 66242,
     "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "peach",
@@ -822,7 +849,7 @@
     "date": "2026-06-18",
     "day": "목",
     "time": "19:00",
-    "title": "[크루] 🐝뚱딴지의놀이터",
+    "title": "[크루] 🐝오아팀의놀이터",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet",
     "url": ""
@@ -834,7 +861,7 @@
     "date": "2026-06-18",
     "day": "목",
     "time": "19:00",
-    "title": "[크루] 🐝뚱딴지의놀이터",
+    "title": "[크루] 🐝오아팀의놀이터",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet",
     "url": ""
@@ -852,13 +879,22 @@
     "url": ""
   },
   {
+    "member": "oa",
+    "date": "2026-06-18",
+    "day": "목",
+    "time": "미정",
+    "title": "잔잔한 노가리 소통",
+    "note": "수동 수정",
+    "source": "manual"
+  },
+  {
     "id": 66253,
     "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "peach",
     "date": "2026-06-18",
     "day": "목",
     "time": "19:00",
-    "title": "[크루] 🐝뚱딴지의놀이터",
+    "title": "[크루] 🐝오아팀의놀이터",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet",
     "url": ""
@@ -882,7 +918,7 @@
     "date": "2026-06-18",
     "day": "목",
     "time": "19:00",
-    "title": "[크루] 🐝뚱딴지의놀이터",
+    "title": "[크루] 🐝오아팀의놀이터",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet",
     "url": ""
@@ -894,7 +930,7 @@
     "date": "2026-06-19",
     "day": "금",
     "time": "미정",
-    "title": "(🍒미밍 아뚱편파응원예정)",
+    "title": "(🍒미밍 응원예정)",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet",
     "url": ""
@@ -918,7 +954,7 @@
     "date": "2026-06-19",
     "day": "금",
     "time": "10:00->16:00",
-    "title": "월드컵 응원->아뚱 중간계 응원",
+    "title": "월드컵 응원 중간계 응원",
     "note": "졸림 이슈",
     "source": "manual",
     "url": ""
@@ -960,30 +996,315 @@
     "url": ""
   },
   {
+    "id": 66272,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-20",
+    "day": "토",
+    "time": "17:00",
+    "title": "내수서버 1차 합격자발표",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66274,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-21",
+    "day": "일",
+    "time": "07:00",
+    "title": "N커넥트 컨텐츠 대비 게임연습 / 카페보기",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66275,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2026-06-22",
     "day": "월",
     "time": "미정",
     "title": "🍒4주년 기념 🍒",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
   },
   {
+    "id": 66276,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2026-06-22",
     "day": "월",
     "time": "미정",
     "title": "뉴미밍 공개",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
   },
   {
+    "id": 66278,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-22",
+    "day": "월",
+    "time": "07:00",
+    "title": "오아팀 점호 & 유키 컨텐츠 / 오아팀 N커넥트 컨텐츠",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66279,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "yuki",
     "date": "2026-06-22",
     "day": "월",
     "time": "미정",
-    "title": "❄️유키 뚱딴지 컨텐츠❄️",
+    "title": "❄️유키 오아팀 컨텐츠❄️",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66281,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-23",
+    "day": "화",
+    "time": "07:00",
+    "title": "오버워치 티어올리기 / 오아팀 싱크룸",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66286,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "homiming",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝오아팀 종겜데이",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66288,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "neboring",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝오아팀 종겜데이",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66290,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "peach",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝오아팀 종겜데이",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66291,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "07:00",
+    "title": "오아팀 종겜데이",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66292,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝오아팀 종겜데이",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66297,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "homiming",
+    "date": "2026-06-25",
+    "day": "목",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66299,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "neboring",
+    "date": "2026-06-25",
+    "day": "목",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66301,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "peach",
+    "date": "2026-06-25",
+    "day": "목",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66302,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-25",
+    "day": "목",
+    "time": "07:00",
+    "title": "대한민국vs남아공 월드컵 / 고래시티 종겜대결 게임연습",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66303,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-25",
+    "day": "목",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66308,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "homiming",
+    "date": "2026-06-26",
+    "day": "금",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66310,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "neboring",
+    "date": "2026-06-26",
+    "day": "금",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66312,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "peach",
+    "date": "2026-06-26",
+    "day": "금",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66313,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-26",
+    "day": "금",
+    "time": "07:00",
+    "title": "or종겜대결",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66314,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-26",
+    "day": "금",
+    "time": "미정",
+    "title": "[크루] 오아팀 vs 고래상사",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66315,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-27",
+    "day": "토",
+    "time": "미정",
+    "title": "회사 및 본가이슈",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66317,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-28",
+    "day": "일",
+    "time": "미정",
+    "title": "회사 및 본가이슈",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66320,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "미정",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66322,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-30",
+    "day": "화",
+    "time": "미정",
+    "title": "미정",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
   }
 ]

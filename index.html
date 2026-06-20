@@ -140,6 +140,7 @@
                 <h2 class="current-week-label" id="currentWeekLabel">2026년 06월 3째주</h2>
                 <button class="nav-btn" id="nextWeekBtn" title="다음 주"><i class="fa-solid fa-chevron-right"></i></button>
                 <button class="today-btn" id="todayBtn">오늘</button>
+                <button class="notepad-btn" id="openNotepadBtn"><i class="fa-solid fa-note-sticky"></i> 메모장 편집</button>
               </div>
               
               <div class="data-status-badge">
@@ -324,6 +325,31 @@
             <button type="submit" class="btn btn-save" id="saveBtn">저장</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메모장 편집 모달 -->
+  <div class="modal-overlay" id="notepadModal">
+    <div class="modal-content glass-card" style="max-width: 600px; width: 95%;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-note-sticky"></i> 주간 일정 메모장 편집</h3>
+        <button class="modal-close-btn" id="notepadModalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 12px; line-height: 1.5;">
+          한 줄에 하루의 일정을 입력해 주세요. 아래 형식을 맞춰서 자유롭게 작성할 수 있습니다.<br>
+          <strong>형식 예시:</strong><br>
+          - 월: 18:00 개인 방송 (비고: 배그 시청자 참여)<br>
+          - 화: 휴방<br>
+          - 수: 20:00 합방 [비고: 멤버 전원 참석]<br>
+          - 목: 미정 잔잔한 노가리 소통
+        </p>
+        <textarea id="notepadTextArea" placeholder="예시)&#10;월: 18:00 개인 방송&#10;화: 휴방&#10;수: 20:00 합방 (비고: 합방 예정)" style="width: 100%; height: 280px; background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; color: #fff; font-size: 13px; font-family: monospace; resize: none; outline: none; line-height: 1.6;"></textarea>
+        <div class="modal-actions" style="margin-top: 16px; justify-content: flex-end; gap: 8px;">
+          <button type="button" class="btn btn-delete" id="notepadCancelBtn" style="background: var(--bg-tertiary); color: var(--color-text-secondary);">취소</button>
+          <button type="button" class="btn btn-save" id="notepadSaveBtn"><i class="fa-solid fa-check"></i> 적용</button>
+        </div>
       </div>
     </div>
   </div>

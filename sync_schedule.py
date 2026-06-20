@@ -209,7 +209,7 @@ def parse_monthly_grid_sheet(csv_data, member_key):
             break
 
     if col_start is None:
-        # Fallback: try columns 4-10 (Yuki) then 1-7 (Niniming)
+        # Fallback: try columns 4-10 (Yuki)
         col_start, col_end = 4, 11
 
     schedules = []
