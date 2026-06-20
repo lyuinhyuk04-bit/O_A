@@ -1,0 +1,27 @@
+{
+  "functions": {
+    "api/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+
+    {
+      "src": "/api/live_status",
+      "dest": "/api/live_status.js"
+    },
+    {
+      "src": "/api/save_schedule",
+      "dest": "/api/save_schedule.js"
+    },
+    {
+      "src": "/api/schedules",
+      "dest": "/api/schedules.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

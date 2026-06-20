@@ -1,0 +1,79 @@
+{
+  "crewLinks": {
+    "youtube": "https://www.youtube.com",
+    "cafe": "https://cafe.naver.com",
+    "sheet": "https://docs.google.com/spreadsheets"
+  },
+  "defaultMember": "oa",
+  "members": {
+    "oa": {
+      "name": "오아",
+      "emoji": "🦁",
+      "soopId": "legendhyuk"
+    },
+    "moyo": {
+      "name": "모요",
+      "emoji": "🐰",
+      "soopId": "duvl123"
+    },
+    "jinho": {
+      "name": "진호",
+      "emoji": "👑",
+      "soopId": "jangjh5409"
+    },
+    "kiise": {
+      "name": "키이세",
+      "emoji": "🦊",
+      "soopId": "0e0e4e"
+    },
+    "jjaemdoeun": {
+      "name": "쨈도은",
+      "emoji": "🍞",
+      "soopId": "odoeun"
+    },
+    "peach": {
+      "name": "피치",
+      "emoji": "🍑",
+      "avatar": "peach.png",
+      "soopId": "nslah830"
+    },
+    "rudidic": {
+      "name": "루디딕",
+      "emoji": "🦦",
+      "soopId": "mnomno55"
+    },
+    "yuki": {
+      "name": "유키",
+      "emoji": "❄️",
+      "avatar": "yuki.jpg",
+      "soopId": "amaiyk0105"
+    },
+    "homiming": {
+      "name": "호미밍",
+      "emoji": "🍒",
+      "avatar": "homiming.png",
+      "soopId": "donggeul2"
+    },
+    "neboring": {
+      "name": "너보링",
+      "emoji": "🩵",
+      "avatar": "neboring.png",
+      "soopId": "hibby1004"
+    },
+    "seolbindal": {
+      "name": "설빈달",
+      "emoji": "🌙",
+      "soopId": "nsnowthemoon"
+    },
+    "navi": {
+      "name": "나비",
+      "emoji": "🦋",
+      "soopId": "navixx"
+    },
+    "extra_member": {
+      "name": "추가 멤버",
+      "emoji": "👤",
+      "soopId": ""
+    }
+  }
+}
