@@ -1906,3 +1906,9 @@ input:checked + .slider:before {
   line-height: 1.5;
 }
 
+#dailyWorkMemberSelect option {
+  background-color: var(--bg-primary);
+  color: #fff;
+}
+
+

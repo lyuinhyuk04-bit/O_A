@@ -1006,14 +1006,46 @@ function renderMembersGridAll() {
 // ── 오늘 한 일 (Daily Works) ───────────────────────────────────────────────────
 function loadDailyWorks() {
   const inputEl = document.getElementById('dailyWorkInput');
-  const titleEl = document.getElementById('dailyWorkMemberTitle');
+  const selectEl = document.getElementById('dailyWorkMemberSelect');
   const listEl  = document.getElementById('dailyWorkList');
   const saveBtn = document.getElementById('saveDailyWorkBtn');
   
-  if (!inputEl || !titleEl || !listEl || !appConfig) return;
+  if (!inputEl || !listEl || !appConfig) return;
 
-  const m = appConfig.members[activeMember];
-  titleEl.innerHTML = `${m.emoji} ${m.name} - 오늘 한 일 기록`;
+  // 1. 셀렉트 박스 채우기 (처음 한 번만 채움)
+  if (selectEl && selectEl.options.length === 0) {
+    const entries = Object.entries(appConfig.members).filter(([key, m]) => key !== 'extra_member');
+    selectEl.innerHTML = entries.map(([key, m]) => {
+      return `<option value="${key}">${m.emoji} ${m.name}</option>`;
+    }).join('');
+    
+    // 현재 activeMember를 기본 선택 값으로 설정
+    selectEl.value = activeMember;
+
+    // 셀렉트 박스 변경 시 이벤트
+    selectEl.addEventListener('change', () => {
+      const selectedMember = selectEl.value;
+      const todayStr = formatDateISO(new Date());
+      
+      let fetchUrl = '/api/daily_works';
+      if (window.location.protocol === 'file:') {
+        fetchUrl = 'http://localhost:8000/api/daily_works';
+      }
+      
+      fetch(fetchUrl)
+        .then(r => r.json())
+        .catch(() => ({}))
+        .then(works => {
+          if (works[todayStr] && works[todayStr][selectedMember]) {
+            inputEl.value = works[todayStr][selectedMember];
+          } else {
+            inputEl.value = '';
+          }
+        });
+    });
+  }
+
+  const selectedMember = selectEl ? selectEl.value : activeMember;
   inputEl.value = '';
 
   const todayStr = formatDateISO(new Date());
@@ -1028,8 +1060,8 @@ function loadDailyWorks() {
     .catch(() => ({}))
     .then(works => {
       // 1. 현재 선택된 멤버의 오늘 기록 채워두기
-      if (works[todayStr] && works[todayStr][activeMember]) {
-        inputEl.value = works[todayStr][activeMember];
+      if (works[todayStr] && works[todayStr][selectedMember]) {
+        inputEl.value = works[todayStr][selectedMember];
       }
 
       // 2. 전체 멤버의 오늘 한 일 리스트 렌더링
@@ -1058,6 +1090,7 @@ function loadDailyWorks() {
   if (!saveBtn.dataset.bound) {
     saveBtn.dataset.bound = 'true';
     saveBtn.addEventListener('click', () => {
+      const targetMember = selectEl ? selectEl.value : activeMember;
       const contentVal = inputEl.value.trim();
       
       let postUrl = '/api/save_daily_work';
@@ -1072,7 +1105,7 @@ function loadDailyWorks() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          member: activeMember,
+          member: targetMember,
           date: todayStr,
           content: contentVal
         })

@@ -201,7 +201,12 @@
             </div>
             
             <div class="daily-work-layout glass-card" style="padding: 20px; border-radius: 12px; margin-top: 16px; display:flex; flex-direction:column; gap:12px;">
-              <h3 id="dailyWorkMemberTitle" style="color:var(--accent-orange); font-size:15px; font-weight:700;">🦁 오아 - 오늘 한 일 기록</h3>
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <label for="dailyWorkMemberSelect" style="color: var(--accent-orange); font-size: 14px; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-user-pen"></i> 활동 기록 대상 멤버 선택:</label>
+                <select id="dailyWorkMemberSelect" style="background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 6px; padding: 6px 12px; color: #fff; font-size: 13px; font-weight: 600; outline: none; cursor: pointer;">
+                  <!-- Dynamically populated -->
+                </select>
+              </div>
               <textarea id="dailyWorkInput" placeholder="오늘 진행한 활동이나 작업 내용을 간단히 기록해 주세요." style="width:100%; height:100px; background:var(--bg-primary); border:1px solid var(--glass-border); border-radius:8px; padding:12px; color:#fff; font-size:13px; resize:none; outline:none;"></textarea>
               <button class="btn btn-save" id="saveDailyWorkBtn" style="font-weight:700; width:fit-content;"><i class="fa-solid fa-check"></i> 기록 저장</button>
             </div>
