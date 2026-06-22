@@ -141,49 +141,62 @@ function startLiveClock() {
   setInterval(updateClock, 1000);
 }
 
+// ── 탭 전환 유틸리티 ──────────────────────────────────────────────────────────────
+function switchTab(targetTab, shouldResetFilter = true) {
+  // 검색창 클리어 및 스케줄 화면 복귀
+  if (searchInput) {
+    searchInput.value = '';
+    if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+  }
+  showScheduleView();
+
+  // 버튼 활성화 클래스 스위칭
+  if (tabButtons) {
+    tabButtons.forEach(b => {
+      if (b.getAttribute('data-tab') === targetTab) {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
+    });
+  }
+
+  // 탭 패널 표시 제어
+  if (tabPanes) {
+    tabPanes.forEach(pane => {
+      const paneId = pane.getAttribute('id');
+      if (paneId === `pane-${targetTab}`) {
+        pane.classList.add('active');
+      } else {
+        pane.classList.remove('active');
+      }
+    });
+  }
+
+  // 모바일일 경우 탭 클릭 후 사이드바 닫기
+  if (sidebar) sidebar.classList.remove('open');
+  if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+
+  // 탭별 추가 렌더링
+  if (targetTab === 'dashboard') {
+    if (shouldResetFilter) {
+      filterLiveByActiveMember = false;
+    }
+    renderLiveStatus(liveMembersData);
+  } else if (targetTab === 'members') {
+    renderMembersGridAll();
+  } else if (targetTab === 'daily-work') {
+    loadDailyWorks();
+  }
+}
+
 // ── 탭 메뉴 제어 로직 ──────────────────────────────────────────────────────────────
 function setupTabs() {
   if (tabButtons) {
     tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const targetTab = btn.getAttribute('data-tab');
-        
-        // 검색창 클리어 및 스케줄 화면 복귀
-        if (searchInput) {
-          searchInput.value = '';
-          if (clearSearchBtn) clearSearchBtn.style.display = 'none';
-          showScheduleView();
-        }
-
-        // 버튼 활성화 클래스 스위칭
-        tabButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        // 탭 패널 표시 제어
-        if (tabPanes) {
-          tabPanes.forEach(pane => {
-            const paneId = pane.getAttribute('id');
-            if (paneId === `pane-${targetTab}`) {
-              pane.classList.add('active');
-            } else {
-              pane.classList.remove('active');
-            }
-          });
-        }
-
-        // 모바일일 경우 탭 클릭 후 사이드바 닫기
-        if (sidebar) sidebar.classList.remove('open');
-        if (sidebarOverlay) sidebarOverlay.classList.remove('active');
-
-        // 탭별 추가 렌더링
-        if (targetTab === 'dashboard') {
-          filterLiveByActiveMember = false;
-          renderLiveStatus(liveMembersData);
-        } else if (targetTab === 'members') {
-          renderMembersGridAll();
-        } else if (targetTab === 'daily-work') {
-          loadDailyWorks();
-        }
+        switchTab(targetTab, true);
       });
     });
   }
@@ -395,6 +408,7 @@ function selectMember(key, isInteractive = true) {
   activeMember = key;
   if (isInteractive) {
     filterLiveByActiveMember = true;
+    switchTab('dashboard', false);
   }
   renderMembersList();
   renderActiveMemberProfile();
