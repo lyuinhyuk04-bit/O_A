@@ -1021,5 +1021,14 @@
     "title": "❄️유키 오아팀 컨텐츠❄️",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
+  },
+  {
+    "member": "yuki",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "2부 유키 컨텐츠",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
   }
 ]
