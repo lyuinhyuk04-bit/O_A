@@ -1122,6 +1122,11 @@ def cumulative_save(new_list, member_key):
         key = (s.get('member',''), s['date'], s.get('time','미정'), s.get('title','')[:30])
         if key not in seen:
             seen.add(key)
+            # Replace Ttungttanji in title and note
+            if s.get("title"):
+                s["title"] = s["title"].replace("뚱딴지", "오아팀")
+            if s.get("note"):
+                s["note"] = s["note"].replace("뚱딴지", "오아팀")
             deduped.append(s)
 
     if SUPABASE_URL and SUPABASE_ANON_KEY:

@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   setupTabs();
   startLiveClock();
+  initTodoList();
 
   let apiSchedulesUrl = '/api/schedules';
   if (window.location.protocol === 'file:') {
@@ -94,7 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(data => {
       appConfig = data.config;
-      rawSchedules = data.schedules;
+      rawSchedules = (data.schedules || []).map(s => {
+        if (s.title) s.title = s.title.replace(/뚱딴지/g, "오아팀");
+        if (s.note) s.note = s.note.replace(/뚱딴지/g, "오아팀");
+        return s;
+      });
       activeMember = appConfig.defaultMember;
       isLoaded = true;
 
@@ -107,7 +112,11 @@ document.addEventListener('DOMContentLoaded', () => {
       isLoaded = true;
       if (window.APP_CONFIG && window.APP_SCHEDULE) {
         appConfig = window.APP_CONFIG;
-        rawSchedules = window.APP_SCHEDULE;
+        rawSchedules = (window.APP_SCHEDULE || []).map(s => {
+          if (s.title) s.title = s.title.replace(/뚱딴지/g, "오아팀");
+          if (s.note) s.note = s.note.replace(/뚱딴지/g, "오아팀");
+          return s;
+        });
         activeMember = appConfig.defaultMember;
 
         renderCrewLinks();
@@ -1210,24 +1219,7 @@ function updateRightPanel() {
   if (!appConfig) return;
   const todayStr = formatDateISO(new Date());
 
-  // 1. TODAY SCHEDULE 요약
-  const todayScheds = rawSchedules.filter(s => s.date === todayStr);
-  if (todayScheds.length === 0) {
-    todayScheduleContainer.innerHTML = `<div class="no-activity">오늘 예정된 작전/일정이 없습니다.</div>`;
-  } else {
-    todayScheduleContainer.innerHTML = todayScheds.map(s => {
-      const m = appConfig.members[s.member] || { name: s.member };
-      const dispTime = s.time === '미정' ? '시간 미정' : s.time;
-      return `
-        <div class="panel-schedule-item">
-          <div class="panel-schedule-meta">
-            <span class="panel-schedule-member">${m.name}</span>
-            <span class="panel-schedule-time"><i class="fa-regular fa-clock"></i> ${dispTime}</span>
-          </div>
-          <div class="panel-schedule-title">${s.title}</div>
-        </div>`;
-    }).join('');
-  }
+  // 1. TODAY SCHEDULE 요약 (To-do list is used instead of automatic schedule)
 
 
 
@@ -1419,3 +1411,117 @@ function loadDailyWorks() {
     });
   }
 }
+
+// ── To-Do List Widget (TODAY SCHEDULE) ─────────────────────────────────────────────
+let todoItems = [];
+
+function initTodoList() {
+  const todoInput = document.getElementById('todoInput');
+  const addTodoBtn = document.getElementById('addTodoBtn');
+
+  // Load from localStorage
+  const saved = localStorage.getItem('oa_today_todos');
+  if (saved) {
+    try {
+      todoItems = JSON.parse(saved);
+    } catch (e) {
+      todoItems = [];
+    }
+  } else {
+    todoItems = [];
+  }
+
+  if (addTodoBtn && todoInput) {
+    addTodoBtn.addEventListener('click', () => {
+      addTodo();
+    });
+    todoInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addTodo();
+      }
+    });
+  }
+
+  renderTodos();
+}
+
+function addTodo() {
+  const todoInput = document.getElementById('todoInput');
+  if (!todoInput) return;
+  const text = todoInput.value.trim();
+  if (!text) return;
+
+  const newItem = {
+    id: Date.now() + Math.random().toString(36).substr(2, 9),
+    text: text,
+    completed: false
+  };
+
+  todoItems.push(newItem);
+  saveTodos();
+  renderTodos();
+  todoInput.value = '';
+  todoInput.focus();
+}
+
+function toggleTodo(id) {
+  todoItems = todoItems.map(item => {
+    if (item.id === id) {
+      return { ...item, completed: !item.completed };
+    }
+    return item;
+  });
+  saveTodos();
+  renderTodos();
+}
+
+function deleteTodo(id) {
+  todoItems = todoItems.filter(item => item.id !== id);
+  saveTodos();
+  renderTodos();
+}
+
+function saveTodos() {
+  localStorage.setItem('oa_today_todos', JSON.stringify(todoItems));
+}
+
+function renderTodos() {
+  const container = document.getElementById('todayScheduleContainer');
+  if (!container) return;
+
+  if (todoItems.length === 0) {
+    container.innerHTML = `<div class="no-activity">할 일이 없습니다.</div>`;
+    return;
+  }
+
+  container.innerHTML = todoItems.map(item => {
+    return `
+      <div class="todo-item ${item.completed ? 'completed' : ''}">
+        <input type="checkbox" class="todo-item-checkbox" ${item.completed ? 'checked' : ''} onchange="window.toggleTodoItem('${item.id}')">
+        <span class="todo-item-text" onclick="window.toggleTodoItem('${item.id}')">${escapeHtml(item.text)}</span>
+        <button class="todo-item-delete" onclick="window.deleteTodoItem('${item.id}')" title="삭제">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+// Global helpers so inline onclick/onchange works smoothly
+window.toggleTodoItem = function(id) {
+  toggleTodo(id);
+};
+
+window.deleteTodoItem = function(id) {
+  deleteTodo(id);
+};
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+

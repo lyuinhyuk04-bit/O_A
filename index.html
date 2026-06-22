@@ -267,8 +267,16 @@
       <!-- 오늘 일정 -->
       <div class="right-panel-section">
         <h4 class="panel-title"><i class="fa-solid fa-calendar-day"></i> TODAY SCHEDULE</h4>
+        <div class="todo-widget-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="todoInput" placeholder="오늘 할 일 입력..." style="flex-grow: 1; background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 12.5px; outline: none;">
+            <button id="addTodoBtn" style="background: var(--accent-orange); border: none; border-radius: 6px; padding: 6px 10px; color: #fff; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <i class="fa-solid fa-plus"></i> 추가
+            </button>
+          </div>
+        </div>
         <div class="today-schedule-container" id="todayScheduleContainer">
-          <div class="no-activity">불러오는 중...</div>
+          <div class="no-activity">할 일이 없습니다.</div>
         </div>
       </div>
       
