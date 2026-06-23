@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTabs();
   startLiveClock();
   initTodoList();
+  initSecurity();
 
   let apiSchedulesUrl = '/api/schedules';
   if (window.location.protocol === 'file:') {
@@ -1188,7 +1189,10 @@ function renderLiveStatus(results) {
     const cardClass = r.is_live ? 'live-card live-active' : 'live-card offline-active';
     const statusText = r.is_live ? 'LIVE' : 'OFFLINE';
     const statusClass = r.is_live ? 'status-badge live' : 'status-badge offline';
-    const displayTitle = r.is_live ? r.broad_title : '방송 준비 중';
+    let displayTitle = r.is_live ? r.broad_title : '방송 준비 중';
+    if (displayTitle) {
+      displayTitle = displayTitle.replace(/뚱딴지/g, "오아팀");
+    }
     const thumbnailSrc = r.is_live ? r.thumbnail : (mConfig.avatar || 'logo.png');
 
     return `
@@ -1230,7 +1234,9 @@ function updateRightPanel() {
   if (liveMembersData.length > 0) {
     liveMembersData.forEach(r => {
       if (r.is_live) {
-        simulatedLogs.push(`[LIVE] ${r.name} 스트리머 뱅온 감지 -> "${r.broad_title.substring(0,18)}..."`);
+        let cleanTitle = r.broad_title || '';
+        cleanTitle = cleanTitle.replace(/뚱딴지/g, "오아팀");
+        simulatedLogs.push(`[LIVE] ${r.name} 스트리머 뱅온 감지 -> "${cleanTitle.substring(0,18)}..."`);
       }
     });
   }
@@ -1524,4 +1530,88 @@ function escapeHtml(text) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+// ── 보안 잠금 기능 (Security Lock: 950120) ──────────────────────────────────────────
+const SECURITY_PASSWORD = "950120";
+
+function initSecurity() {
+  const dailyWorkPasswordInput = document.getElementById('dailyWorkPasswordInput');
+  const dailyWorkUnlockBtn = document.getElementById('dailyWorkUnlockBtn');
+  const todoPasswordInput = document.getElementById('todoPasswordInput');
+  const todoUnlockBtn = document.getElementById('todoUnlockBtn');
+
+  if (dailyWorkUnlockBtn && dailyWorkPasswordInput) {
+    dailyWorkUnlockBtn.addEventListener('click', () => {
+      tryUnlock(dailyWorkPasswordInput.value, 'dailyWorkLockError');
+      dailyWorkPasswordInput.value = '';
+    });
+    dailyWorkPasswordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        tryUnlock(dailyWorkPasswordInput.value, 'dailyWorkLockError');
+        dailyWorkPasswordInput.value = '';
+      }
+    });
+  }
+
+  if (todoUnlockBtn && todoPasswordInput) {
+    todoUnlockBtn.addEventListener('click', () => {
+      tryUnlock(todoPasswordInput.value, 'todoLockError');
+      todoPasswordInput.value = '';
+    });
+    todoPasswordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        tryUnlock(todoPasswordInput.value, 'todoLockError');
+        todoPasswordInput.value = '';
+      }
+    });
+  }
+
+  checkSecurityState();
+}
+
+function checkSecurityState() {
+  const isUnlocked = sessionStorage.getItem('oa_security_unlocked') === 'true';
+  
+  const dailyWorkLockScreen = document.getElementById('dailyWorkLockScreen');
+  const dailyWorkActualContent = document.getElementById('dailyWorkActualContent');
+  const todoLockScreen = document.getElementById('todoLockScreen');
+  const todoActualContent = document.getElementById('todoActualContent');
+
+  if (isUnlocked) {
+    if (dailyWorkLockScreen) dailyWorkLockScreen.style.display = 'none';
+    if (dailyWorkActualContent) dailyWorkActualContent.style.display = 'block';
+    if (todoLockScreen) todoLockScreen.style.display = 'none';
+    if (todoActualContent) todoActualContent.style.display = 'block';
+  } else {
+    if (dailyWorkLockScreen) dailyWorkLockScreen.style.display = 'flex';
+    if (dailyWorkActualContent) dailyWorkActualContent.style.display = 'none';
+    if (todoLockScreen) todoLockScreen.style.display = 'flex';
+    if (todoActualContent) todoActualContent.style.display = 'none';
+  }
+}
+
+function tryUnlock(password, errorElementId) {
+  const errorEl = document.getElementById(errorElementId);
+  if (password === SECURITY_PASSWORD) {
+    sessionStorage.setItem('oa_security_unlocked', 'true');
+    if (errorEl) errorEl.style.display = 'none';
+    checkSecurityState();
+    showToast('보안 영역이 잠금 해제되었습니다.', 'success');
+    
+    // 오늘 한 일 탭이 활성화되어 있다면 즉시 데이터 다시 로드
+    const dailyPane = document.getElementById('pane-daily-work');
+    if (dailyPane && dailyPane.classList.contains('active')) {
+      loadDailyWorks();
+    }
+  } else {
+    if (errorEl) {
+      errorEl.style.display = 'block';
+      setTimeout(() => {
+        errorEl.style.display = 'none';
+      }, 3000);
+    }
+    showToast('비밀번호가 올바르지 않습니다.', 'error');
+  }
+}
+
 

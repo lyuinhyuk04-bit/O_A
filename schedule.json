@@ -1,31 +1,15 @@
 [
   {
-    "id": 66109,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2025-06-16",
     "day": "월",
     "time": "14:00",
-    "title": "카트동아리 면접",
+    "title": "카트 동아리 면접 & 레오펠 오디션",
     "note": "네이버 카페 이미지 일정 기준",
     "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+    "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
-    "id": 66110,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
-    "member": "homiming",
-    "date": "2025-06-16",
-    "day": "월",
-    "time": "미정",
-    "title": "카페탐방 & 카트러쉬",
-    "note": "네이버 카페 이미지 일정 기준",
-    "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
-  },
-  {
-    "id": 66111,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2025-06-17",
     "day": "화",
@@ -33,47 +17,19 @@
     "title": "휴방",
     "note": "방셀 숙제 & 베이킹",
     "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+    "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
-    "id": 66112,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2025-06-18",
     "day": "수",
     "time": "미정",
-    "title": "카페탐방 메이플스토리 육성",
+    "title": "카페탐방 & 노래방송 & PEAK 합방 (w.천양 유연서 김쿼카)",
     "note": "네이버 카페 이미지 일정 기준",
     "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+    "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
-    "id": 66113,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
-    "member": "homiming",
-    "date": "2025-06-18",
-    "day": "수",
-    "time": "미정",
-    "title": "휴식",
-    "note": "네이버 카페 이미지 일정 기준",
-    "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
-  },
-  {
-    "id": 66114,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
-    "member": "homiming",
-    "date": "2025-06-18",
-    "day": "수",
-    "time": "미정",
-    "title": "종겜합방 (천양, 유연서, 김쿼카)",
-    "note": "네이버 카페 이미지 일정 기준",
-    "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
-  },
-  {
-    "id": 66115,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2025-06-19",
     "day": "목",
@@ -81,55 +37,37 @@
     "title": "휴방",
     "note": "치지직 친구들 만나러!",
     "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+    "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
-    "id": 66116,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2025-06-20",
     "day": "금",
     "time": "미정",
-    "title": "메이플스토리 (챌서버) / [신캐] 렌 만들기",
+    "title": "카페탐방 & 메이플스토리 렌 육성 달리기",
     "note": "네이버 카페 이미지 일정 기준",
     "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+    "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
-    "id": 66117,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2025-06-21",
     "day": "토",
     "time": "17:00",
     "title": "처니랜드",
-    "note": "네이버 카페 이미지 일정 기준",
+    "note": "카페탐방",
     "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+    "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
-    "id": 66118,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
-    "member": "homiming",
-    "date": "2025-06-21",
-    "day": "토",
-    "time": "미정",
-    "title": "카페탐방 밍마카세",
-    "note": "네이버 카페 이미지 일정 기준",
-    "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
-  },
-  {
-    "id": 66119,
-    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2025-06-22",
     "day": "일",
     "time": "미정",
-    "title": "방송 3주년 - 3주년 기념 케이크 베이킹 (W.고글이)",
+    "title": "🎉 3주년 🎉 고글이 반캠 베이킹 방송",
     "note": "네이버 카페 이미지 일정 기준",
     "source": "naver_cafe_image",
-    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+    "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
     "id": 66120,
@@ -550,6 +488,16 @@
     "note": "",
     "source": "soop",
     "url": "https://www.sooplive.com/station/hibby1004/post/198459123"
+  },
+  {
+    "member": "yuki",
+    "date": "2026-06-12",
+    "day": "금",
+    "time": "11:00",
+    "title": "월드컵 한국 응원방송 (w.기다형)",
+    "note": "바로 집와서 방송 킬게요!",
+    "source": "soop",
+    "url": "https://www.sooplive.com/station/gjstn7637/post/198387809"
   },
   {
     "id": 66199,
@@ -996,31 +944,76 @@
     "url": ""
   },
   {
+    "id": 66272,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-20",
+    "day": "토",
+    "time": "17:00",
+    "title": "내수서버 1차 합격자발표",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66274,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-21",
+    "day": "일",
+    "time": "07:00",
+    "title": "N커넥트 컨텐츠 대비 게임연습 / 카페보기",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66275,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2026-06-22",
     "day": "월",
     "time": "미정",
     "title": "🍒4주년 기념 🍒",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
   },
   {
+    "id": 66276,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "homiming",
     "date": "2026-06-22",
     "day": "월",
     "time": "미정",
     "title": "뉴미밍 공개",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
   },
   {
+    "id": 66278,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
+    "member": "yuki",
+    "date": "2026-06-22",
+    "day": "월",
+    "time": "07:00",
+    "title": "오아팀 점호 & 유키 컨텐츠 / 오아팀 N커넥트 컨텐츠",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet",
+    "url": ""
+  },
+  {
+    "id": 66279,
+    "created_at": "2026-06-20T09:55:31.42498+00:00",
     "member": "yuki",
     "date": "2026-06-22",
     "day": "월",
     "time": "미정",
     "title": "❄️유키 오아팀 컨텐츠❄️",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
   },
   {
     "member": "yuki",
