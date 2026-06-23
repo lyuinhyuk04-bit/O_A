@@ -1580,13 +1580,13 @@ function showPasswordModal(pendingTab = null) {
   if (error) error.style.display = 'none';
   if (input) input.value = '';
   
-  modal.style.display = 'flex';
+  modal.classList.add('active');
   if (input) input.focus();
 }
 
 function hidePasswordModal() {
   const modal = document.getElementById('passwordModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) modal.classList.remove('active');
   pendingTabAfterUnlock = null;
 }
 
