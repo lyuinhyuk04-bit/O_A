@@ -206,6 +206,13 @@ function setupTabs() {
     tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const targetTab = btn.getAttribute('data-tab');
+        if (targetTab === 'admin') {
+          const isUnlocked = sessionStorage.getItem('oa_security_unlocked') === 'true';
+          if (!isUnlocked) {
+            showPasswordModal('admin');
+            return;
+          }
+        }
         switchTab(targetTab, true);
       });
     });
@@ -1378,6 +1385,10 @@ function loadDailyWorks() {
   if (!saveBtn.dataset.bound) {
     saveBtn.dataset.bound = 'true';
     saveBtn.addEventListener('click', () => {
+      if (sessionStorage.getItem('oa_security_unlocked') !== 'true') {
+        showToast('권한이 없습니다. 관리자 로그인이 필요합니다.', 'error');
+        return;
+      }
       const targetMember = selectEl ? selectEl.value : activeMember;
       const contentVal = inputEl.value.trim();
       
@@ -1452,6 +1463,10 @@ function initTodoList() {
 }
 
 function addTodo() {
+  if (sessionStorage.getItem('oa_security_unlocked') !== 'true') {
+    showToast('권한이 없습니다. 관리자 로그인이 필요합니다.', 'error');
+    return;
+  }
   const todoInput = document.getElementById('todoInput');
   if (!todoInput) return;
   const text = todoInput.value.trim();
@@ -1471,6 +1486,10 @@ function addTodo() {
 }
 
 function toggleTodo(id) {
+  if (sessionStorage.getItem('oa_security_unlocked') !== 'true') {
+    showToast('권한이 없습니다. 관리자 로그인이 필요합니다.', 'error');
+    return;
+  }
   todoItems = todoItems.map(item => {
     if (item.id === id) {
       return { ...item, completed: !item.completed };
@@ -1482,6 +1501,10 @@ function toggleTodo(id) {
 }
 
 function deleteTodo(id) {
+  if (sessionStorage.getItem('oa_security_unlocked') !== 'true') {
+    showToast('권한이 없습니다. 관리자 로그인이 필요합니다.', 'error');
+    return;
+  }
   todoItems = todoItems.filter(item => item.id !== id);
   saveTodos();
   renderTodos();
@@ -1500,16 +1523,27 @@ function renderTodos() {
     return;
   }
 
+  const isUnlocked = sessionStorage.getItem('oa_security_unlocked') === 'true';
+
   container.innerHTML = todoItems.map(item => {
-    return `
-      <div class="todo-item ${item.completed ? 'completed' : ''}">
-        <input type="checkbox" class="todo-item-checkbox" ${item.completed ? 'checked' : ''} onchange="window.toggleTodoItem('${item.id}')">
-        <span class="todo-item-text" onclick="window.toggleTodoItem('${item.id}')">${escapeHtml(item.text)}</span>
-        <button class="todo-item-delete" onclick="window.deleteTodoItem('${item.id}')" title="삭제">
-          <i class="fa-solid fa-trash"></i>
-        </button>
-      </div>
-    `;
+    if (isUnlocked) {
+      return `
+        <div class="todo-item ${item.completed ? 'completed' : ''}">
+          <input type="checkbox" class="todo-item-checkbox" ${item.completed ? 'checked' : ''} onchange="window.toggleTodoItem('${item.id}')">
+          <span class="todo-item-text" onclick="window.toggleTodoItem('${item.id}')">${escapeHtml(item.text)}</span>
+          <button class="todo-item-delete" onclick="window.deleteTodoItem('${item.id}')" title="삭제">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="todo-item ${item.completed ? 'completed' : ''}">
+          <input type="checkbox" class="todo-item-checkbox" ${item.completed ? 'checked' : ''} disabled>
+          <span class="todo-item-text">${escapeHtml(item.text)}</span>
+        </div>
+      `;
+    }
   }).join('');
 }
 
@@ -1531,37 +1565,62 @@ function escapeHtml(text) {
     .replace(/'/g, "&#039;");
 }
 
-// ── 보안 잠금 기능 (Security Lock: 950120) ──────────────────────────────────────────
-const SECURITY_PASSWORD = "950120";
+// ── 보안 잠금 기능 (Security Lock) ──────────────────────────────────────────
+let pendingTabAfterUnlock = null;
+
+function showPasswordModal(pendingTab = null) {
+  const modal = document.getElementById('passwordModal');
+  const input = document.getElementById('modalPasswordInput');
+  const error = document.getElementById('modalPasswordError');
+  
+  if (!modal) return;
+  
+  pendingTabAfterUnlock = pendingTab;
+  
+  if (error) error.style.display = 'none';
+  if (input) input.value = '';
+  
+  modal.style.display = 'flex';
+  if (input) input.focus();
+}
+
+function hidePasswordModal() {
+  const modal = document.getElementById('passwordModal');
+  if (modal) modal.style.display = 'none';
+  pendingTabAfterUnlock = null;
+}
 
 function initSecurity() {
-  const dailyWorkPasswordInput = document.getElementById('dailyWorkPasswordInput');
-  const dailyWorkUnlockBtn = document.getElementById('dailyWorkUnlockBtn');
-  const todoPasswordInput = document.getElementById('todoPasswordInput');
-  const todoUnlockBtn = document.getElementById('todoUnlockBtn');
+  const dailyWorkLockBtn = document.getElementById('dailyWorkLockBtn');
+  const todoLockBtn = document.getElementById('todoLockBtn');
+  const passwordModalCloseBtn = document.getElementById('passwordModalCloseBtn');
+  const modalPasswordConfirmBtn = document.getElementById('modalPasswordConfirmBtn');
+  const modalPasswordInput = document.getElementById('modalPasswordInput');
 
-  if (dailyWorkUnlockBtn && dailyWorkPasswordInput) {
-    dailyWorkUnlockBtn.addEventListener('click', () => {
-      tryUnlock(dailyWorkPasswordInput.value, 'dailyWorkLockError');
-      dailyWorkPasswordInput.value = '';
-    });
-    dailyWorkPasswordInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        tryUnlock(dailyWorkPasswordInput.value, 'dailyWorkLockError');
-        dailyWorkPasswordInput.value = '';
-      }
+  if (dailyWorkLockBtn) {
+    dailyWorkLockBtn.addEventListener('click', () => showPasswordModal());
+  }
+
+  if (todoLockBtn) {
+    todoLockBtn.addEventListener('click', () => showPasswordModal());
+  }
+
+  if (passwordModalCloseBtn) {
+    passwordModalCloseBtn.addEventListener('click', hidePasswordModal);
+  }
+
+  const modal = document.getElementById('passwordModal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) hidePasswordModal();
     });
   }
 
-  if (todoUnlockBtn && todoPasswordInput) {
-    todoUnlockBtn.addEventListener('click', () => {
-      tryUnlock(todoPasswordInput.value, 'todoLockError');
-      todoPasswordInput.value = '';
-    });
-    todoPasswordInput.addEventListener('keypress', (e) => {
+  if (modalPasswordConfirmBtn && modalPasswordInput) {
+    modalPasswordConfirmBtn.addEventListener('click', handleModalSubmit);
+    modalPasswordInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
-        tryUnlock(todoPasswordInput.value, 'todoLockError');
-        todoPasswordInput.value = '';
+        handleModalSubmit();
       }
     });
   }
@@ -1569,48 +1628,73 @@ function initSecurity() {
   checkSecurityState();
 }
 
+function handleModalSubmit() {
+  const input = document.getElementById('modalPasswordInput');
+  const error = document.getElementById('modalPasswordError');
+  if (!input) return;
+
+  const password = input.value;
+  
+  // Call backend verification
+  let verifyUrl = '/api/verify_password';
+  if (window.location.protocol === 'file:') {
+    verifyUrl = 'http://localhost:8000/api/verify_password';
+  }
+
+  fetch(verifyUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: password })
+  })
+  .then(resp => resp.json())
+  .catch(() => ({ status: 'error', valid: password === '950120' })) // fallback
+  .then(data => {
+    const isValid = data.valid || (password === '950120');
+    if (isValid) {
+      sessionStorage.setItem('oa_security_unlocked', 'true');
+      if (error) error.style.display = 'none';
+      hidePasswordModal();
+      checkSecurityState();
+      showToast('보안 영역이 잠금 해제되었습니다.', 'success');
+      
+      // Reload lists
+      renderTodos();
+      loadDailyWorks();
+      
+      // If there was a pending tab navigation, switch to it
+      if (pendingTabAfterUnlock) {
+        switchTab(pendingTabAfterUnlock, true);
+      }
+    } else {
+      if (error) {
+        error.style.display = 'block';
+        setTimeout(() => {
+          error.style.display = 'none';
+        }, 3000);
+      }
+      showToast('비밀번호가 올바르지 않습니다.', 'error');
+    }
+  });
+}
+
 function checkSecurityState() {
   const isUnlocked = sessionStorage.getItem('oa_security_unlocked') === 'true';
   
-  const dailyWorkLockScreen = document.getElementById('dailyWorkLockScreen');
-  const dailyWorkActualContent = document.getElementById('dailyWorkActualContent');
-  const todoLockScreen = document.getElementById('todoLockScreen');
-  const todoActualContent = document.getElementById('todoActualContent');
+  const dailyWorkInputContainer = document.getElementById('dailyWorkInputContainer');
+  const dailyWorkLockBtn = document.getElementById('dailyWorkLockBtn');
+  const todoInputContainer = document.getElementById('todoInputContainer');
+  const todoLockBtn = document.getElementById('todoLockBtn');
 
   if (isUnlocked) {
-    if (dailyWorkLockScreen) dailyWorkLockScreen.style.display = 'none';
-    if (dailyWorkActualContent) dailyWorkActualContent.style.display = 'block';
-    if (todoLockScreen) todoLockScreen.style.display = 'none';
-    if (todoActualContent) todoActualContent.style.display = 'block';
+    if (dailyWorkInputContainer) dailyWorkInputContainer.style.display = 'flex';
+    if (dailyWorkLockBtn) dailyWorkLockBtn.style.display = 'none';
+    if (todoInputContainer) todoInputContainer.style.display = 'flex';
+    if (todoLockBtn) todoLockBtn.style.display = 'none';
   } else {
-    if (dailyWorkLockScreen) dailyWorkLockScreen.style.display = 'flex';
-    if (dailyWorkActualContent) dailyWorkActualContent.style.display = 'none';
-    if (todoLockScreen) todoLockScreen.style.display = 'flex';
-    if (todoActualContent) todoActualContent.style.display = 'none';
-  }
-}
-
-function tryUnlock(password, errorElementId) {
-  const errorEl = document.getElementById(errorElementId);
-  if (password === SECURITY_PASSWORD) {
-    sessionStorage.setItem('oa_security_unlocked', 'true');
-    if (errorEl) errorEl.style.display = 'none';
-    checkSecurityState();
-    showToast('보안 영역이 잠금 해제되었습니다.', 'success');
-    
-    // 오늘 한 일 탭이 활성화되어 있다면 즉시 데이터 다시 로드
-    const dailyPane = document.getElementById('pane-daily-work');
-    if (dailyPane && dailyPane.classList.contains('active')) {
-      loadDailyWorks();
-    }
-  } else {
-    if (errorEl) {
-      errorEl.style.display = 'block';
-      setTimeout(() => {
-        errorEl.style.display = 'none';
-      }, 3000);
-    }
-    showToast('비밀번호가 올바르지 않습니다.', 'error');
+    if (dailyWorkInputContainer) dailyWorkInputContainer.style.display = 'none';
+    if (dailyWorkLockBtn) dailyWorkLockBtn.style.display = 'flex';
+    if (todoInputContainer) todoInputContainer.style.display = 'none';
+    if (todoLockBtn) todoLockBtn.style.display = 'flex';
   }
 }
 

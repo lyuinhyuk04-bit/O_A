@@ -201,7 +201,8 @@
               <p>각 멤버가 오늘 진행한 업무 및 방송 활동 내역을 기록하는 대장입니다.</p>
             </div>
             
-            <div class="daily-work-layout glass-card" style="padding: 20px; border-radius: 12px; margin-top: 16px; display:flex; flex-direction:column; gap:12px;">
+            <!-- 입력 양식 (인증되었을 때만 보임) -->
+            <div class="daily-work-layout glass-card" id="dailyWorkInputContainer" style="display: none; padding: 20px; border-radius: 12px; margin-top: 16px; display:flex; flex-direction:column; gap:12px;">
               <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                 <label for="dailyWorkMemberSelect" style="color: var(--accent-orange); font-size: 14px; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-user-pen"></i> 활동 기록 대상 멤버 선택:</label>
                 <select id="dailyWorkMemberSelect" style="background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 6px; padding: 6px 12px; color: #fff; font-size: 13px; font-weight: 600; outline: none; cursor: pointer;">
@@ -211,6 +212,11 @@
               <textarea id="dailyWorkInput" placeholder="오늘 진행한 활동이나 작업 내용을 간단히 기록해 주세요." style="width:100%; height:100px; background:var(--bg-primary); border:1px solid var(--glass-border); border-radius:8px; padding:12px; color:#fff; font-size:13px; resize:none; outline:none;"></textarea>
               <button class="btn btn-save" id="saveDailyWorkBtn" style="font-weight:700; width:fit-content;"><i class="fa-solid fa-check"></i> 기록 저장</button>
             </div>
+
+            <!-- 미인증 상태일 때 보여줄 작성 제한 버튼 -->
+            <button id="dailyWorkLockBtn" style="width: 100%; margin-top: 16px; background: rgba(255,255,255,0.03); border: 1px dashed var(--glass-border); border-radius: 8px; padding: 16px; color: var(--color-text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s;">
+              <i class="fa-solid fa-lock" style="color: var(--accent-orange); font-size: 14px;"></i> 🔒 관리자 로그인 후 기록 작성 가능
+            </button>
 
             <div class="ops-section-header" style="margin-top: 32px;">
               <h2><i class="fa-solid fa-list-check"></i> 전체 멤버 금일 활동 대장</h2>
@@ -267,7 +273,9 @@
       <!-- 오늘 일정 -->
       <div class="right-panel-section">
         <h4 class="panel-title"><i class="fa-solid fa-calendar-day"></i> TODAY SCHEDULE</h4>
-        <div class="todo-widget-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
+        
+        <!-- 할 일 입력 영역 (인증되었을 때만 보임) -->
+        <div class="todo-widget-container" id="todoInputContainer" style="display: none; flex-direction: column; gap: 8px; margin-bottom: 10px;">
           <div style="display: flex; gap: 6px;">
             <input type="text" id="todoInput" placeholder="오늘 할 일 입력..." style="flex-grow: 1; background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 12.5px; outline: none;">
             <button id="addTodoBtn" style="background: var(--accent-orange); border: none; border-radius: 6px; padding: 6px 10px; color: #fff; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
@@ -275,6 +283,13 @@
             </button>
           </div>
         </div>
+
+        <!-- 미인증 상태일 때 보여줄 추가 제한 버튼 -->
+        <button id="todoLockBtn" style="width: 100%; margin-bottom: 10px; background: rgba(255,255,255,0.03); border: 1px dashed var(--glass-border); border-radius: 6px; padding: 8px; color: var(--color-text-secondary); font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s;">
+          <i class="fa-solid fa-lock" style="color: var(--accent-orange);"></i> 🔒 관리자 로그인 후 추가 가능
+        </button>
+
+        <!-- 할 일 목록 (언제나 보임) -->
         <div class="today-schedule-container" id="todayScheduleContainer">
           <div class="no-activity">할 일이 없습니다.</div>
         </div>
@@ -369,6 +384,22 @@
     </button>
   </div>
   
+  <!-- 비밀번호 입력 모달 -->
+  <div class="modal-overlay" id="passwordModal" style="display: none;">
+    <div class="modal-content glass-card" style="max-width: 320px; width: 90%; text-align: center; padding: 24px;">
+      <div class="modal-header" style="border-bottom: none; padding-bottom: 0; justify-content: center; position: relative;">
+        <h3 style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;"><i class="fa-solid fa-lock" style="color: var(--accent-orange); margin-right: 6px;"></i> 관리자 권한 인증</h3>
+        <button class="modal-close-btn" id="passwordModalCloseBtn" style="position: absolute; right: 0; top: 0;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding-top: 16px;">
+        <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 16px;">수행하려면 관리자 비밀번호를 입력해 주십시오.</p>
+        <input type="password" id="modalPasswordInput" placeholder="비밀번호 입력..." style="width: 100%; background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 6px; padding: 10px 12px; color: #fff; font-size: 13px; outline: none; text-align: center; margin-bottom: 12px;">
+        <div id="modalPasswordError" style="color: var(--accent-pink); font-size: 11px; font-weight: 600; display: none; margin-bottom: 12px;">❌ 비밀번호가 올바르지 않습니다.</div>
+        <button id="modalPasswordConfirmBtn" style="width: 100%; background: var(--accent-orange); border: none; border-radius: 6px; padding: 10px; color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; transition: background 0.2s;">인증 완료</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Main App Script -->
   <script src="app.js"></script>
 </body>

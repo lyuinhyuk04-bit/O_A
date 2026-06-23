@@ -9,6 +9,23 @@ from concurrent.futures import ThreadPoolExecutor
 
 PORT = 8000
 
+def load_env_password():
+    pwd = "950120" # fallback
+    if os.path.exists(".env"):
+        try:
+            with open(".env", "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip().startswith("ADMIN_PASSWORD="):
+                        parts = line.strip().split("=", 1)
+                        if len(parts) > 1:
+                            pwd = parts[1].strip().strip('"').strip("'")
+                            break
+        except:
+            pass
+    if os.environ.get("ADMIN_PASSWORD"):
+        pwd = os.environ.get("ADMIN_PASSWORD")
+    return pwd
+
 class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         if self.command == 'GET':
@@ -19,6 +36,7 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         try:
+
 
             if self.path.startswith('/api/live_status'):
                 import urllib.parse
@@ -190,7 +208,30 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
 
     def do_POST(self):
-        if self.path == '/api/save_daily_work':
+        if self.path == '/api/verify_password':
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            try:
+                payload = json.loads(post_data.decode('utf-8'))
+                input_pwd = payload.get("password")
+                correct_pwd = load_env_password()
+                
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                
+                if input_pwd == correct_pwd:
+                    self.wfile.write(json.dumps({"status": "ok", "valid": True}).encode('utf-8'))
+                else:
+                    self.wfile.write(json.dumps({"status": "ok", "valid": False}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode('utf-8'))
+        elif self.path == '/api/save_daily_work':
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
             try:
